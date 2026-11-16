@@ -3,7 +3,7 @@
 # Использование: ./service_support.sh [status|backup]
 # --- Проверка: передан ли хотя бы один аргумент ---
 if [ -z "$1" ]; then
-  echo "Использование: $0 [status|backup]"
+  echo "Использование: $0 [status|backup|logs]"
   exit 1
 fi
 # --- Режим status: список Docker-контейнеров ---
@@ -22,6 +22,12 @@ elif [ "$1" == "backup" ]; then
   # Имитация сохранения конфигурации ИИС
   echo "Бэкап базы знаний ИИС от $DATA_TAG" >"$BACKUP_FILE"
   echo "Конфигурация успешно сохранена в файл: $BACKUP_FILE"
+  echo "====================================="
+elif [ "$1" == "logs" ]; then
+  echo "=== Логи Grafana Monitoring ==="
+  #Показывает логи Grafana Monitoring
+  #с временными отметками без отладочных сообщений
+  docker logs --timestamps grafana_monitoring 2>&1 | grep -v "DEBUG"
   echo "====================================="
 # --- Неизвестный аргумент ---
 else
